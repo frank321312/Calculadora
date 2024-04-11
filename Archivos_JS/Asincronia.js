@@ -53,11 +53,35 @@ for (let index = 0; index < 13; index++) {
             listResult.pop()
             resultado.textContent = listResult.join("");
         } else if (divAritmetica.textContent == "=") {
+            // ------------------------------------------------------------------- 
+            // Desestructurar el contenido de la etiqueta span que es el resultado 
+            // ------------------------------------------------------------------- 
+
+            const listaAritmetica = ["+", "-", "/", "x"];
+            let resultadoSpan = resultado.textContent.split("+").join(" ");
+
+            for (let index = 0; index < listaAritmetica.length; index++) {
+                resultadoSpan = resultadoSpan.split(`${listaAritmetica[index]}`).join(" ");
+            }
+            let resultadoFinalPrimero = resultadoSpan.split(" ");
+            console.log(resultadoFinalPrimero);
             
+            let listMate = resultado.textContent.split("1").join(" ");                
+            for (let index = 0; index < 10; index++) {
+                listMate = listMate.split(`${index}`).join(" ");
+            }
+            let resultadoFinalSegundo = listMate.trim().split(" ").join("").split("");
+            console.log(resultadoFinalSegundo);
         }
-        
     });
 }
 
 calculadora.appendChild(fragmentCalculadora);
-// let list = [1,2,3,4,5,6,7];
+
+// function sumar(...args) {
+//     let resultado = 0;
+//     let suma = resultado + args;
+//     return suma;
+// }
+
+// console.log(sumar(1,2,3,4,5,6,7));

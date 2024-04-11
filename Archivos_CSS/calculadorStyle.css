@@ -77,5 +77,5 @@
     flex-direction: row-reverse;
     font-size: 30px;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
 }
