@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Creado por alguien anonimo
+// ---------------------------------------------------------------
+
 const calculadora = document.querySelector(".calculadora");
 const resultado = document.querySelector(".resultado");
 

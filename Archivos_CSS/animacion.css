@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgb(6, 6, 39), rgb(15, 15, 94));
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+}
+
+.spanNime {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgb(197, 48, 48);
+    box-shadow: 0 0 25px rgb(202, 65, 65), 0 0 25px rgb(202, 65, 65), 0 0 25px rgb(202, 65, 65);
+    animation-name: desplazar;
+    animation-duration: calc(50s / var(--i));
+    animation-iteration-count: infinite;
+}
+
+.spanNime:nth-child(even) {
+    background-color: rgb(53, 53, 190);
+    box-shadow: 0 0 25px rgb(75, 75, 207), 0 0 25px rgb(75, 75, 207), 0 0 25px rgb(75, 75, 207);
+}
+
+@keyframes desplazar {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(0);
+    }
+}
