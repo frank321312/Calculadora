@@ -79,7 +79,7 @@ body {
 }
 
 .cuadro__win {
-    width: 50%;
+    width: 60%;
     height: 50%;
     border-radius: 10px;
     background-color: #fff;
@@ -93,6 +93,11 @@ body {
     visibility: hidden;
     /* animation-name: bajarCuadroWin; */
     animation-duration: 2s;
+}
+
+.span {
+    text-align: center;
+    width: 100%;
 }
 
 .cotenedor__hijos {

@@ -1,19 +1,22 @@
+const contenedorHijos = document.querySelector(".cotenedor__hijos");
 const cuadroAll = document.querySelectorAll(".cuadro");
 const cuadroWin = document.querySelector(".cuadro__win");
-const buttonReload = document.createElement("button");
-const contenedorHijos = document.querySelector(".cotenedor__hijos");
 const players = document.querySelectorAll(".player");
-
+const buttonReload = document.createElement("button");
 buttonReload.classList.add("reload");
 buttonReload.textContent = "Volver a jugar";
 
 let contador = 0;
-
-let storageX = sessionStorage.getItem("JugadorX") == null ? sessionStorage.setItem("JugadorX", 0) : sessionStorage.getItem("JugadorX");
-let storageO = sessionStorage.getItem("JugadorO") == null ? sessionStorage.setItem("JugadorO", 0) : sessionStorage.getItem("JugadorO");
-
-players[0].textContent = `Jugador X: ${storageX}`;
-players[1].textContent = `Jugador O: ${storageO}`;
+let listObjectGame = [
+    {
+        player1: {
+            points: 0
+        },
+        player2: {
+            points: 0
+        }
+    }
+];
 
 function tieneHijos(agregarHijo, elemento) {
     if (elemento.children.length == 0) {
@@ -23,30 +26,63 @@ function tieneHijos(agregarHijo, elemento) {
 
 function contieneEsaClase(elemento, clase) {
     return elemento.classList.contains(clase);
-}   
+}
 
 function esGanador(listElement, num1, num2, num3, team) {
-    return  contieneEsaClase(listElement[num1], team) && 
-            contieneEsaClase(listElement[num2], team) && 
-            contieneEsaClase(listElement[num3], team);
+    return contieneEsaClase(listElement[num1], team) &&
+        contieneEsaClase(listElement[num2], team) &&
+        contieneEsaClase(listElement[num3], team);
+}
+
+function assignTeam(listElement, team) {
+    return esGanador(listElement, 0, 1, 2, team) || esGanador(listElement, 3, 4, 5, team) || esGanador(listElement, 6, 7, 8, team) ||
+        esGanador(listElement, 0, 4, 8, team) || esGanador(listElement, 2, 4, 6, team) || esGanador(listElement, 0, 3, 6, team) ||
+        esGanador(listElement, 1, 4, 7, team) || esGanador(listElement, 2, 5, 8, team);
 }
 
 function ganaEquis(listElement) {
-    return  esGanador(listElement, 0, 1, 2, "x") || esGanador(listElement, 3, 4, 5, "x") || esGanador(listElement, 6, 7, 8, "x") ||
-            esGanador(listElement, 0, 4, 8, "x") || esGanador(listElement, 2, 4, 6, "x") || esGanador(listElement, 0, 3, 6, "x") ||
-            esGanador(listElement, 1, 4, 7, "x") || esGanador(listElement, 2, 5, 8, "x");
+    return assignTeam(listElement, "x");
 }
 
 function ganaO(listElement) {
-    return esGanador(listElement, 0, 1, 2, "o") || esGanador(listElement, 3, 4, 5, "o") || esGanador(listElement, 6, 7, 8, "o") ||
-        esGanador(listElement, 0, 4, 8, "o") || esGanador(listElement, 2, 4, 6, "o") || esGanador(listElement, 0, 3, 6, "o") ||
-        esGanador(listElement, 1, 4, 7, "o") || esGanador(listElement, 2, 5, 8, "o");
+    return assignTeam(listElement, "o");
 }
 
 function agregarAnimacion(lista, nombre) {
     for (let i = 0; i < lista.length; i++) {
         lista[i].style.animationName = nombre;
     }
+}
+
+function reiniciarPartida() {
+    cuadroAll[i].innerHTML = "";
+    cuadroAll[i].classList.remove("o", "x", "contador")
+}
+
+function removeClassElement(list) {
+    for (let i = 0; i < list.length; i++) {
+        list[i].classList.remove("o", "x", "contador")        
+    }
+}
+
+function removeClassTermino(list) {
+    for (let i = 0; i < list.length; i++) {
+        list[i].classList.remove("termino")        
+    }    
+}
+
+function terminoPartida(list) {
+    for (let i = 0; i < list.length; i++) {
+        cuadroAll[i].classList.add("termino")
+    }    
+}
+
+function agregarScriptAnimacion(spanText) {
+    contenedorHijos.innerHTML = spanText;
+    contenedorHijos.appendChild(buttonReload);
+    agregarAnimacion(cuadroAll, "desvanecerCuadro");
+    cuadroWin.style.visibility = "visible";
+    cuadroWin.style.animationName = "bajarCuadroWin";
 }
 
 for (let i = 0; i < cuadroAll.length; i++) {
@@ -57,44 +93,56 @@ for (let i = 0; i < cuadroAll.length; i++) {
     o.classList.add("circulo");
 
     cuadroAll[i].addEventListener("click", () => {
-        
-        if (!cuadroAll[i].classList.contains("contador")) {
+
+        let containsTermino = cuadroAll[i].classList.contains("termino");
+        if (!cuadroAll[i].classList.contains("contador") && !containsTermino) {
             contador++
-        }
-        
+        } 
+
         cuadroAll[i].classList.add("contador");
-        
-        console.log(contador);
+        let claseContains = cuadroAll[i].classList.contains("x") || cuadroAll[i].classList.contains("o");
         if (contador % 2 == 0) {
-            tieneHijos(o, cuadroAll[i]);
-            cuadroAll[i].classList.add("o");
+            !containsTermino && tieneHijos(o, cuadroAll[i]);
+            if (!claseContains && !containsTermino) cuadroAll[i].classList.add("o");
         } else {
-            tieneHijos(x, cuadroAll[i]);
-            cuadroAll[i].classList.add("x");
+            !containsTermino && tieneHijos(x, cuadroAll[i]);
+            // tieneHijos(x, cuadroAll[i]);
+            if (!claseContains && !containsTermino) cuadroAll[i].classList.add("x");
         }
-        console.log(ganaEquis(cuadroAll));
         if (ganaEquis(cuadroAll)) {
-            contenedorHijos.innerHTML = `<span>Gano el jugador con "X"</span>`;
-            contenedorHijos.appendChild(buttonReload);
-            agregarAnimacion(cuadroAll, "desvanecerCuadro");
-            cuadroWin.style.visibility = "visible";
-            cuadroWin.style.animationName = "bajarCuadroWin";
-            let valorX = Number(sessionStorage.getItem("JugadorX"));
-            sessionStorage.setItem("JugadorX", valorX += 1);
-            players[0].textContent = `Jugador X: ${sessionStorage.getItem("JugadorX")}`;
+            if (!containsTermino) {
+                listObjectGame[0].player1.points++;
+            }
+            terminoPartida(cuadroAll);
+            agregarScriptAnimacion(`<span class="span">Gano el jugador con "X"</span>`)
+            players[0].textContent = `Jugador X: ${listObjectGame[0].player1.points}`
+            removeClassElement(cuadroAll)
         } else if (ganaO(cuadroAll)) {
-            contenedorHijos.innerHTML = `<span>Gano el jugador con "O"</span>`;
-            contenedorHijos.appendChild(buttonReload);
-            agregarAnimacion(cuadroAll, "desvanecerCuadro");
-            cuadroWin.style.visibility = "visible";
-            cuadroWin.style.animationName = "bajarCuadroWin";
-            let valorO = Number(sessionStorage.getItem("JugadorO"));
-            sessionStorage.setItem("JugadorO", valorO += 1);
-            players[1].textContent = `Jugador O: ${sessionStorage.getItem("JugadorO")}`;
+            if (!containsTermino) {
+                listObjectGame[0].player2.points++;
+            }
+            terminoPartida(cuadroAll);
+            agregarScriptAnimacion(`<span class="span">Gano el jugador con "O"</span>`)
+            players[1].textContent = `Jugador O: ${listObjectGame[0].player2.points}`
+            removeClassElement(cuadroAll)
         }
+        if (contador == 9) {
+            contenedorHijos.style.width = "50vw"
+            agregarScriptAnimacion(`<span class="span">No hay ganador</span>`)
+            removeClassElement(cuadroAll)
+            terminoPartida(cuadroAll);
+        }
+        console.log(contador);
     });
 
     buttonReload.addEventListener("click", () => {
-        window.location.reload();
+        cuadroWin.style.visibility = "";
+        cuadroWin.style.animationName = "";
+        contenedorHijos.innerHTML = "";
+        cuadroAll[i].style.animationName = "";
+        cuadroAll[i].innerHTML = "";
+        contador = 0;
+        removeClassTermino(cuadroAll)
+        removeClassElement(cuadroAll)
     });
 }
