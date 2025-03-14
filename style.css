@@ -1,0 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculadora {
+    min-width: 240px;
+    flex-basis: 280px;
+    min-height: 200px;
+    height: 50%;
+    background-color: rgb(24, 23, 23);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.input-output {
+    height: 14%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    background-color: rgb(170, 168, 168);
+    border-radius: 7px;
+    font-size: 30px;
+    font-weight: bold;
+    overflow-y: hidden;
+    overflow-x:initial;
+}
+
+.numeros {
+    display: grid;
+    height: 70%;
+    width: 100%;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.numero {
+    align-content: center;
+    text-align: center;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: rgb(73, 73, 73);
+    border-radius: 5px;
+    cursor: pointer;
+    transition-property: background;
+    transition-duration: .3s;
+}
+
+.result-output {
+    background-color: #f89706;
+}
+
+/* Efectos para los numeros y operaciones */
+
+.numero:hover {
+    background-color: rgb(99, 98, 98);
+}
+
+.result-output:hover {
+    background-color: #dd8a0f;
+}
